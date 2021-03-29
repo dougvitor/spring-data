@@ -1,19 +1,33 @@
 package br.com.home.spring.data;
 
+import java.util.List;
+import java.util.Scanner;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-import br.com.home.spring.data.orm.Cargo;
-import br.com.home.spring.data.repository.CargoRepository;
+import br.com.home.spring.data.service.CrudCargoService;
+import br.com.home.spring.data.service.CrudFuncionarioService;
+import br.com.home.spring.data.service.CrudUnidadeTrabalhoService;
+import br.com.home.spring.data.util.Menu;
 
 @SpringBootApplication
 public class SpringDataApplication implements CommandLineRunner{
 	
-	private final CargoRepository repository; 
+
+	private final CrudCargoService cargoService;
+
+	private final CrudFuncionarioService funcionarioService;
+
+	private final CrudUnidadeTrabalhoService unidadeTrabalhoService; 
 	
-	public SpringDataApplication(CargoRepository repository) {
-		this.repository = repository;
+	public SpringDataApplication(CrudCargoService cargoService,
+			CrudFuncionarioService funcionarioService, 
+			CrudUnidadeTrabalhoService unidadeTrabalhoService) {
+		this.cargoService = cargoService;
+		this.funcionarioService = funcionarioService;
+		this.unidadeTrabalhoService = unidadeTrabalhoService;
 	}
 
 	public static void main(String[] args) {
@@ -22,10 +36,17 @@ public class SpringDataApplication implements CommandLineRunner{
 
 	@Override
 	public void run(String... args) throws Exception {
-		Cargo entity = new Cargo();
-		entity.setDescricao("DESENVOLVEDOR DE SOFTWARE");
+		Scanner scan = new Scanner(System.in);
 		
-		this.repository.save(entity);
+		System.out.println("Qual função deseja executar?");
+		Menu.exibirMenu(List.of("Sair", "Funcionário", "Cargo", "Unidade"));
+		int action = scan.nextInt();
+		
+		switch(action) {
+			case 1 -> this.funcionarioService.inicial(scan);
+			case 2 -> this.cargoService.inicial(scan);
+			case 3 -> this.unidadeTrabalhoService.inicial(scan);
+			default -> System.out.println("Execução do sistema finalizada!");
+		}
 	}
-
 }
