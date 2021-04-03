@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.home.spring.data.service.CrudCargoService;
 import br.com.home.spring.data.service.CrudFuncionarioService;
 import br.com.home.spring.data.service.CrudUnidadeTrabalhoService;
+import br.com.home.spring.data.service.RelatoriosService;
 import br.com.home.spring.data.util.Menu;
 
 @SpringBootApplication
@@ -22,12 +23,16 @@ public class SpringDataApplication implements CommandLineRunner{
 
 	private final CrudUnidadeTrabalhoService unidadeTrabalhoService; 
 	
+	private final RelatoriosService relatosrioService;
+	
 	public SpringDataApplication(CrudCargoService cargoService,
 			CrudFuncionarioService funcionarioService, 
-			CrudUnidadeTrabalhoService unidadeTrabalhoService) {
+			CrudUnidadeTrabalhoService unidadeTrabalhoService,
+			RelatoriosService relatoriosService) {
 		this.cargoService = cargoService;
 		this.funcionarioService = funcionarioService;
 		this.unidadeTrabalhoService = unidadeTrabalhoService;
+		this.relatosrioService = relatoriosService;
 	}
 
 	public static void main(String[] args) {
@@ -39,13 +44,14 @@ public class SpringDataApplication implements CommandLineRunner{
 		Scanner scan = new Scanner(System.in);
 		
 		System.out.println("Qual função deseja executar?");
-		Menu.exibirMenu(List.of("Sair", "Funcionário", "Cargo", "Unidade"));
+		Menu.exibirMenu(List.of("Sair", "Funcionário", "Cargo", "Unidade", "Relatorios"));
 		int action = scan.nextInt();
 		
 		switch(action) {
 			case 1 -> this.funcionarioService.inicial(scan);
 			case 2 -> this.cargoService.inicial(scan);
 			case 3 -> this.unidadeTrabalhoService.inicial(scan);
+			case 4 -> this.relatosrioService.inicial(scan);
 			default -> System.out.println("Execução do sistema finalizada!");
 		}
 	}
