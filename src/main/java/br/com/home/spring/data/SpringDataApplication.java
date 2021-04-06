@@ -10,6 +10,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import br.com.home.spring.data.service.CrudCargoService;
 import br.com.home.spring.data.service.CrudFuncionarioService;
 import br.com.home.spring.data.service.CrudUnidadeTrabalhoService;
+import br.com.home.spring.data.service.RelatorioFuncionarioDinamicoService;
 import br.com.home.spring.data.service.RelatoriosService;
 import br.com.home.spring.data.util.Menu;
 
@@ -25,14 +26,18 @@ public class SpringDataApplication implements CommandLineRunner{
 	
 	private final RelatoriosService relatosrioService;
 	
+	private final RelatorioFuncionarioDinamicoService relatorioDinamicoService;
+	
 	public SpringDataApplication(CrudCargoService cargoService,
 			CrudFuncionarioService funcionarioService, 
 			CrudUnidadeTrabalhoService unidadeTrabalhoService,
-			RelatoriosService relatoriosService) {
+			RelatoriosService relatoriosService,
+			RelatorioFuncionarioDinamicoService relatorioDinamicoService) {
 		this.cargoService = cargoService;
 		this.funcionarioService = funcionarioService;
 		this.unidadeTrabalhoService = unidadeTrabalhoService;
 		this.relatosrioService = relatoriosService;
+		this.relatorioDinamicoService = relatorioDinamicoService;
 	}
 
 	public static void main(String[] args) {
@@ -44,7 +49,7 @@ public class SpringDataApplication implements CommandLineRunner{
 		Scanner scan = new Scanner(System.in);
 		
 		System.out.println("Qual função deseja executar?");
-		Menu.exibirMenu(List.of("Sair", "Funcionário", "Cargo", "Unidade", "Relatorios"));
+		Menu.exibirMenu(List.of("Sair", "Funcionário", "Cargo", "Unidade", "Relatorios", "Relatorio Dinamico"));
 		int action = scan.nextInt();
 		
 		switch(action) {
@@ -52,6 +57,7 @@ public class SpringDataApplication implements CommandLineRunner{
 			case 2 -> this.cargoService.inicial(scan);
 			case 3 -> this.unidadeTrabalhoService.inicial(scan);
 			case 4 -> this.relatosrioService.inicial(scan);
+			case 5 -> this.relatorioDinamicoService.inicial(scan);
 			default -> System.out.println("Execução do sistema finalizada!");
 		}
 	}
