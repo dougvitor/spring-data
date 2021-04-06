@@ -8,6 +8,7 @@ import java.util.Scanner;
 import org.springframework.stereotype.Service;
 
 import br.com.home.spring.data.orm.Funcionario;
+import br.com.home.spring.data.orm.FuncionarioProjecao;
 import br.com.home.spring.data.repository.FuncionarioRepository;
 import br.com.home.spring.data.util.Menu;
 
@@ -30,7 +31,8 @@ public class RelatoriosService {
 			Menu.exibirMenu(List.of("Sair", 
 					"Busca funcionário por nome", 
 					"Busca funcionário por nome, maior salário e data de contratação",
-					"Busca funcionário por data de contratação"));
+					"Busca funcionário por data de contratação",
+					"Busca funcionário salário"));
 			int action = scan.nextInt();
 			scan.nextLine();
 			
@@ -42,6 +44,7 @@ public class RelatoriosService {
 				case 1 -> this.buscaFuncionarioByNome(scan);
 				case 2 -> this.buscaFuncionarioByNomeMaiorSalarioDataContratacao(scan);
 				case 3 -> this.buscaFuncionarioByDataContratacao(scan);
+				case 4 -> this.buscaFuncionariosSalarios();
 				default -> {
 					execute = false;
 					System.out.println("Opção informada inválida!\n");
@@ -79,6 +82,12 @@ public class RelatoriosService {
 		List<Funcionario> funcionarios = repository.findPorMaiorDataContratacao(dataContratacao);
 		funcionarios.forEach(System.out::println);
 		
+	}
+	
+	private void buscaFuncionariosSalarios() {
+		List<FuncionarioProjecao> funcionarios = repository.findFuncionariosSalarios();
+		funcionarios.forEach(f -> System.out.println(String.format("Funcionario id: %d | nome: %s | salario: %.2f | cargo: %s", 
+				f.getId(), f.getNome(), f.getSalario(), f.getCargoDescricao())));
 	}
 
 }
